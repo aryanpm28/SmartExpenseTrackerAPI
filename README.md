@@ -92,7 +92,7 @@ GET /budget
 
 Update application.properties file:
 
-spring.datasource.url=jdbc:mysql://localhost:3306/smartexpensetracker
+spring.datasource.url=jdbc:mysql://localhost:3307/smartexpensetracker
 spring.datasource.username=root
 spring.datasource.password=root
 
@@ -105,7 +105,7 @@ spring.jpa.show-sql=true
 
 ## 1. Clone Repository
 
-git clone https://github.com/aryanpm1122/SmartExpenseTrackerAPI.git
+git clone https://github.com/aryanpm28/SmartExpenseTrackerAPI.git
 
 ---
 
