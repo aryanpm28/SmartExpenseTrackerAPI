@@ -1,13 +1,16 @@
 # SmartExpenseTrackerAPI
 
-SmartExpenseTrackerAPI is a simple Spring Boot REST API project used to manage daily expenses and budget records.
+SmartExpenseTrackerAPI is a Spring Boot REST API project used to manage expenses, income, and monthly budgets.
 
-This project helps users:
-- Add expenses
+The project allows users to:
+- Add expenses and income
+- Update and delete expenses
 - View all expenses
-- Get expense by ID
-- Delete expenses
-- Manage budget limits
+- Search expenses by category
+- Track budget limits
+- Calculate total income, expense, and balance
+- Use pagination
+- Secure APIs using JWT Authentication
 
 ---
 
@@ -16,22 +19,12 @@ This project helps users:
 - Java
 - Spring Boot
 - Spring Data JPA
+- Spring Security
+- JWT Authentication
 - MySQL
 - Maven
+- Lombok
 - Postman
-
----
-
-# Project Structure
-
-src/main/java
-│
-├── controller
-├── service
-├── repository
-├── entity
-├── dto
-└── exception
 
 ---
 
@@ -43,14 +36,16 @@ src/main/java
 
 POST /expenses
 
+
 Example JSON:
 
 {
-  "title": "Food",
+  "title": "Pizza",
   "amount": 500,
-  "category": "Restaurant",
-  "date": "2026-05-07"
+  "type": "EXPENSE",
+  "category": "Food"
 }
+
 
 ---
 
@@ -70,9 +65,28 @@ GET /expenses/1
 
 ---
 
+### Update Expense
+
+PUT /expenses/{id}
+
+---
+
 ### Delete Expense
 
 DELETE /expenses/{id}
+
+---
+
+### Search By Category
+
+GET /expenses/category/Food
+
+---
+
+### Pagination
+
+GET /expenses/pagination?page=0&size=5
+
 
 ---
 
@@ -80,17 +94,34 @@ DELETE /expenses/{id}
 
 ### Add Budget
 
-POST /budget
+POST /expenses/budget
 
-### Get Budget
 
-GET /budget
+Example JSON:
+
+{
+  "category": "Food",
+  "amount": 5000,
+  "month": 5,
+  "year": 2026
+}
+
+
+---
+
+# Authentication API
+
+### Login
+
+POST /auth/login?username=aryan
+
+Returns JWT Token.
 
 ---
 
 # Database Configuration
 
-Update application.properties file:
+Update application.properties
 
 spring.datasource.url=jdbc:mysql://localhost:3307/smartexpensetracker
 spring.datasource.username=root
@@ -101,7 +132,7 @@ spring.jpa.show-sql=true
 
 ---
 
-# How to Run Project
+# How To Run Project
 
 ## 1. Clone Repository
 
@@ -112,15 +143,12 @@ git clone https://github.com/aryanpm28/SmartExpenseTrackerAPI.git
 ## 2. Open Project
 
 Open project in:
-- IntelliJ IDEA
-OR
 - VS Code
+- IntelliJ IDEA
 
 ---
 
-## 3. Configure MySQL
-
-Create database:
+## 3. Create MySQL Database
 
 CREATE DATABASE smartexpensetracker;
 
@@ -128,11 +156,9 @@ CREATE DATABASE smartexpensetracker;
 
 ## 4. Run Application
 
-Run:
-
 mvn spring-boot:run
 
-OR run main class:
+OR run:
 
 SmartExpenseTrackerApiApplication.java
 
@@ -148,17 +174,40 @@ http://localhost:8080
 
 ---
 
+# Project Structure
+
+src/main/java/com/example/SmartExpenseTrackerAPI
+│
+├── AuthController.java
+├── Budget.java
+├── BudgetRepository.java
+├── Expense.java
+├── ExpenseController.java
+├── ExpenseDTO.java
+├── ExpenseRepository.java
+├── ExpenseService.java
+├── GlobalExceptionHandler.java
+├── JwtUtil.java
+├── ResourceNotFoundException.java
+├── SecurityConfig.java
+├── SmartExpenseTrackerApiApplication.java
+└── User.java
+
+---
+
 # Project Flow
 
-Client Request
-      ↓
-Controller Layer
-      ↓
-Service Layer
-      ↓
-Repository Layer
-      ↓
+Client Request  
+↓  
+Controller Layer  
+↓  
+Service Layer  
+↓  
+Repository Layer  
+↓  
 MySQL Database
+
+---
 
 # Author
 
