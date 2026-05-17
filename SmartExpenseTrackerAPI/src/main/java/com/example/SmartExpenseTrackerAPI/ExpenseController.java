@@ -3,78 +3,107 @@ package com.example.SmartExpenseTrackerAPI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-// REST API controller
+import jakarta.validation.Valid;
+
+// REST API Controller
 @RestController
-@RequestMapping("/expenses") // Base URL
+@RequestMapping("/expenses")
 public class ExpenseController {
 
-    // Inject service object
+    // Inject Expense Service
     @Autowired
     private ExpenseService service;
 
-    // Inject service object
+    // Inject Budget Repository
     @Autowired
     private BudgetRepository budgetRepo;
 
-    // API to add expense
+    // Home API
+    @GetMapping("/")
+    public String home() {
+        return "Smart Expense Tracker API is Running";
+    }
+
+    // Add Expense
     @PostMapping
-    public String add(@RequestBody ExpenseDTO dto) {
+    public String addExpense(@Valid @RequestBody ExpenseDTO dto) {
         return service.addExpense(dto);
     }
 
-    // API to delete expense by ID
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
-        return service.deleteExpense(id);
-    }
-
-    // API to get all expenses
+    // Get All Expenses
     @GetMapping
-    public List<Expense> getAll() {
+    public List<Expense> getAllExpenses() {
         return service.getAll();
     }
 
-    // API to get expense by ID
+    // Get Expense By ID
     @GetMapping("/{id}")
     public Expense getExpenseById(@PathVariable Long id) {
-
         return service.getExpenseById(id);
     }
 
-    @GetMapping("/")
-    public String home() {
-        return "Expense Tracker API is running";
+    // Update Expense
+    @PutMapping("/{id}")
+    public Expense updateExpense(@PathVariable Long id,
+            @RequestBody ExpenseDTO dto) {
+
+        return service.updateExpense(id, dto);
     }
 
-    // API to get all total income by ID
+    // Delete Expense
+    @DeleteMapping("/{id}")
+    public String deleteExpense(@PathVariable Long id) {
+        return service.deleteExpense(id);
+    }
+
+    // Get Total Income
     @GetMapping("/income")
-    public double income() {
+    public double getTotalIncome() {
         return service.getTotalIncome();
     }
 
-    // API to get all total expense by ID
+    // Get Total Expense
     @GetMapping("/expense")
-    public double expense() {
+    public double getTotalExpense() {
         return service.getTotalExpense();
     }
 
-    // API to get all balance by ID
+    // Get Current Balance
     @GetMapping("/balance")
-    public double balence() {
+    public double getBalance() {
         return service.getBalance();
     }
 
-    // API to get all budget by ID
+    // Add Budget
     @PostMapping("/budget")
     public Budget addBudget(@RequestBody Budget budget) {
+
         return budgetRepo.save(budget);
+    }
+
+    // Search Expense By Category
+    @GetMapping("/category/{category}")
+    public List<Expense> getByCategory(@PathVariable String category) {
+
+        return service.getByCategory(category);
+    }
+
+    // Pagination API
+    @GetMapping("/pagination")
+    public Page<Expense> pagination(@RequestParam int page,
+            @RequestParam int size) {
+
+        return service.getExpensesWithPagination(page, size);
     }
 }

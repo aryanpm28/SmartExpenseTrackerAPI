@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 // Creates Budget table in database
@@ -19,6 +20,7 @@ public class Budget {
     private String category;
     
     // Monthly budget amount
+    @Positive(message = "Budget must be greater than 0")
     private double amount;
 
     private int month;
